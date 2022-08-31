@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/tana-web/static/css/main.e7e0cc46.css",
+    "main.js": "/tana-web/static/js/main.d2f1b5b1.js",
+    "static/js/787.cce9aca9.chunk.js": "/tana-web/static/js/787.cce9aca9.chunk.js",
+    "index.html": "/tana-web/index.html",
+    "main.e7e0cc46.css.map": "/tana-web/static/css/main.e7e0cc46.css.map",
+    "main.d2f1b5b1.js.map": "/tana-web/static/js/main.d2f1b5b1.js.map",
+    "787.cce9aca9.chunk.js.map": "/tana-web/static/js/787.cce9aca9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e7e0cc46.css",
+    "static/js/main.d2f1b5b1.js"
+  ]
+}
