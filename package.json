@@ -19,7 +19,8 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "nth-check": ">=2.0.1"
   },
   "scripts": {
     "predeploy": "npm run build",
@@ -48,6 +49,7 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^4.0.0"
+    "gh-pages": "^4.0.0",
+    "nth-check": ">=2.0.1"
   }
 }
