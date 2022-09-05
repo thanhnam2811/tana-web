@@ -3,7 +3,7 @@ import React from 'react';
 import { Avatar, Badge, IconButton, Tooltip, useTheme } from '@mui/material';
 
 export default function CustomIconButton({
-  tooltip,
+  tooltip = '',
   onClick,
   notifyCount,
   Icon,
@@ -26,7 +26,7 @@ export default function CustomIconButton({
 
   return (
     <IconButton onClick={onClick} sx={{ ...sx }}>
-      <Tooltip title={tooltip} disableHoverListener={!tooltip}>
+      <Tooltip disableHoverListener={!tooltip} title={tooltip}>
         <Badge
           max={99}
           color='error'

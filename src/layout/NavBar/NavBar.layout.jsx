@@ -1,12 +1,10 @@
 import React from 'react';
 
 import { useTheme } from '@emotion/react';
-import { Badge, Divider, Grid } from '@mui/material';
+import { Divider, Grid, Tab, Tabs } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
 import {
   FiBell,
   FiHome,
@@ -115,42 +113,36 @@ export default function NavBar({ isLightTheme, setIsLightTheme }) {
                 overflowX: 'auto',
               }}
             >
-              {pages.map((page, index) => {
-                const active = pathname.startsWith(page.path);
-                return (
-                  <Tooltip title={page.label} key={index}>
-                    <Button
-                      sx={{
-                        px: {
-                          xs: 2,
-                          sm: 3,
-                          md: 4,
-                        },
-                        height: '100%',
-                        borderRadius: '0',
-                        display: page.display || 'block',
-                        minWidth: 'max-content',
-                        borderBottom: active
-                          ? `2px solid ${theme.palette.primary.main}`
-                          : 'none',
-                      }}
-                      aria-label={page.label}
-                      color={active ? 'primary' : 'inActive'}
-                      onClick={() => {
-                        nav(page.path);
-                      }}
-                    >
-                      <Badge
-                        max={99}
-                        color='error'
-                        badgeContent={page.countNotify}
-                      >
-                        {<page.icon color='inherit' size={24} />}
-                      </Badge>
-                    </Button>
-                  </Tooltip>
-                );
-              })}
+              <Tabs
+                value={
+                  pages.find((page) => pathname.startsWith(page.path))?.path
+                }
+                onChange={(e, path) => nav(path)}
+                aria-label='icon nav'
+                sx={{
+                  height: '100%',
+                  '& div': {
+                    height: '100%',
+                  },
+                  '& button': {
+                    color: theme.palette.inActive.main,
+                  },
+                }}
+              >
+                {pages.map((page, index) => (
+                  <Tab
+                    value={page.path}
+                    key={index}
+                    icon={<page.icon color='inherit' size={24} />}
+                    aria-label={page.label}
+                    sx={{
+                      display: page.display,
+                      height: '100%',
+                    }}
+                    onClick={(e) => nav(page.path)}
+                  />
+                ))}
+              </Tabs>
             </Grid>
 
             {/* Right Nav Area */}

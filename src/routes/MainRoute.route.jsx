@@ -7,9 +7,9 @@ import MessagesRoute from './MessagesRoute.route';
 export default function MainRoute() {
   return (
     <Routes>
-      <Route path='/' element={<Navigate replace to='/home' />} />
       <Route path='home' element={<Home />} />
       <Route path='messages/*' element={<MessagesRoute />} />
+      <Route path='/*' element={<Navigate replace to='/home' />} />
     </Routes>
   );
 }
