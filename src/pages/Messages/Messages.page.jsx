@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 
 import {
   Avatar,
   Badge,
   Box,
+  CircularProgress,
   Divider,
   Grid,
   IconButton,
@@ -11,20 +12,27 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Typography
+  Slide,
+  Tab,
+  Tabs,
+  Typography,
 } from '@mui/material';
 import {
   BsCursorFill,
   BsEmojiHeartEyesFill,
+  BsFileEarmarkImage,
+  BsFileEarmarkZip,
   BsFillCameraVideoFill,
   BsFillFileEarmarkFill,
   BsInfoCircleFill,
+  BsLink,
   BsTelephoneFill,
-  BsThreeDotsVertical
+  BsThreeDotsVertical,
 } from 'react-icons/bs';
-import { FiEdit } from 'react-icons/fi';
+import { FaArrowDown } from 'react-icons/fa';
+import { FiBellOff, FiEdit, FiTrash, FiUserPlus } from 'react-icons/fi';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate, useParams } from 'react-router-dom';
-import ScrollToBottom from 'react-scroll-to-bottom';
 import CustomAvatarBadge from '../../components/CustomAvatarBadge/CustomAvatarBadge.component';
 import CustomBox from '../../components/CustomBox/CustomBox.component';
 import CustomIconButton from '../../components/CustomIconButton/CustomIconButton.component';
@@ -33,12 +41,105 @@ import SearchInput from '../../components/CustomInput/SearchInput.component';
 import CenterArea from '../../layout/Area/CenterArea.layout';
 import LeftArea from '../../layout/Area/LeftArea.layout';
 import RightArea from '../../layout/Area/RightArea.layout';
+import useOnScreen from '../../utils/useOnScreen.hook';
 import MessageContainer from './MessageContainer.component';
 import { listMessagesDemo, listRoomDemo } from './Messages.data';
+
+const MESS_PER_PAGE = 40;
+const data = listMessagesDemo
+  .concat(listMessagesDemo)
+  .concat(listMessagesDemo)
+  .concat(listMessagesDemo)
+  .concat(listMessagesDemo)
+  .concat(listMessagesDemo)
+  .concat(listMessagesDemo);
+
+const MessagesHistory = () => {
+  const scrollToRef = (ref) => {
+    ref.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+  const bottomRef = useRef(null);
+  const atBottom = useOnScreen(bottomRef);
+
+  const [messData, setMessData] = useState(
+    data.slice(0, MESS_PER_PAGE)
+    // .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
+  );
+
+  const handleLoadMore = () => {
+    const moreMess = data.slice(
+      messData.length,
+      messData.length + MESS_PER_PAGE
+    );
+    setTimeout(
+      () => setMessData((messData) => messData.concat(moreMess)),
+      1000
+    );
+  };
+
+  return (
+    <Box
+      id='messages-history'
+      overflow='auto'
+      height='100%'
+      maxHeight='100%'
+      display='flex'
+      flexDirection='column-reverse'
+    >
+      <InfiniteScroll
+        dataLength={messData.length}
+        style={{ display: 'flex', flexDirection: 'column-reverse' }}
+        next={() => handleLoadMore()}
+        hasMore={messData.length < data.length}
+        inverse={true}
+        loader={
+          <Box key='loader' display='flex' justifyContent='center' m={2}>
+            <CircularProgress />
+          </Box>
+        }
+        scrollableTarget='messages-history'
+      >
+        <Slide direction='up' in={!atBottom} mountOnEnter unmountOnExit>
+          <Box
+            position='absolute'
+            m='auto'
+            left={0}
+            right={0}
+            bottom={0}
+            display='flex'
+            justifyContent='center'
+          >
+            <CustomIconButton
+              onClick={() => scrollToRef(bottomRef)}
+              tooltip='Mới nhất'
+              variant='color'
+              Icon={FaArrowDown}
+            />
+          </Box>
+        </Slide>
+        <Box ref={bottomRef} />
+        {messData.map((item, index) => (
+          <MessageContainer
+            key={index}
+            other={item.from === 'other'}
+            text={item.message}
+          />
+        ))}
+      </InfiniteScroll>
+    </Box>
+  );
+};
 
 export default function Messages() {
   const nav = useNavigate();
   const param = useParams();
+
+  const listTabsStore = [
+    { type: 'media', label: 'Ảnh/Video', icon: BsFileEarmarkImage },
+    { type: 'file', label: 'Tập tin', icon: BsFileEarmarkZip },
+    { type: 'link', label: 'Liên kết', icon: BsLink },
+  ];
+  const [activeTabStore, setActiveTabStore] = useState(listTabsStore[0].type);
 
   return (
     <Grid container m={0}>
@@ -244,21 +345,8 @@ export default function Messages() {
             wrap='nowrap'
             height='calc(100% - 69px)'
           >
-            <Grid item xs overflow='hidden'>
-              <ScrollToBottom
-                mode='bottom'
-                className='STB-container'
-                scrollViewClassName='STB-view'
-                followButtonClassName='STB-button'
-              >
-                {listMessagesDemo.map((item) => (
-                  <MessageContainer
-                    key={item.id}
-                    other={item.from === 'other'}
-                    text={item.message}
-                  />
-                ))}
-              </ScrollToBottom>
+            <Grid item xs overflow='hidden' position='relative'>
+              <MessagesHistory />
             </Grid>
             <Grid item xs='auto'>
               {/* Chat Input */}
@@ -303,8 +391,110 @@ export default function Messages() {
         </CustomBox>
       </CenterArea>
 
-      <RightArea>
-        <CustomBox></CustomBox>
+      <RightArea id='room__detail'>
+        <CustomBox>
+          {/* Room detail */}
+          <Grid container sx={{ p: 2 }}>
+            {/* Detail */}
+            <Grid
+              item
+              xs={12}
+              display='flex'
+              alignItems='center'
+              flexDirection='column'
+            >
+              {/* Room Avatar */}
+              <Avatar
+                alt='Thái Thành Nam'
+                src={process.env.PUBLIC_URL + '/static/images/avatar-nam.jpg'}
+                sx={{
+                  width: '80px',
+                  height: '80px',
+                }}
+              />
+
+              {/* Room Name */}
+              <Typography variant='h5' fontWeight={700}>
+                Thái Thành Nam
+              </Typography>
+
+              {/* Room status */}
+              <Typography variant='subtitle2'>Đang hoạt động</Typography>
+            </Grid>
+
+            {/* Action */}
+            <Grid item xs={12} px={4}>
+              <Grid container>
+                {/* Action Item */}
+                <Grid
+                  item
+                  xs
+                  display='flex'
+                  alignItems='center'
+                  flexDirection='column'
+                >
+                  {/* Action Button */}
+                  <CustomIconButton variant='color' Icon={FiUserPlus} />
+                  {/* Action Title */}
+                  <Typography sx={{ mt: '-6px' }} variant='subtitle2'>
+                    Tạo nhóm
+                  </Typography>
+                </Grid>
+                {/* Action Item */}
+                <Grid
+                  item
+                  xs
+                  display='flex'
+                  alignItems='center'
+                  flexDirection='column'
+                >
+                  {/* Action Button */}
+                  <CustomIconButton variant='color' Icon={FiBellOff} />
+                  {/* Action Title */}
+                  <Typography sx={{ mt: '-6px' }} variant='subtitle2'>
+                    Tắt thông báo
+                  </Typography>
+                </Grid>
+                {/* Action Item */}
+                <Grid
+                  item
+                  xs
+                  display='flex'
+                  alignItems='center'
+                  flexDirection='column'
+                >
+                  {/* Action Button */}
+                  <CustomIconButton variant='color' Icon={FiTrash} />
+                  {/* Action Title */}
+                  <Typography sx={{ mt: '-6px' }} variant='subtitle2'>
+                    Xóa
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          {/* Room store */}
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs
+              variant='fullWidth'
+              value={activeTabStore}
+              onChange={(e, val) => setActiveTabStore(val)}
+              sx={{ minHeight: 0 }}
+            >
+              {listTabsStore.map((tab) => (
+                <Tab
+                  icon={<tab.icon />}
+                  iconPosition='start'
+                  value={tab.type}
+                  key={tab.type}
+                  label={tab.label}
+                  sx={{ textTransform: 'none', minHeight: 0 }}
+                ></Tab>
+              ))}
+            </Tabs>
+          </Box>
+        </CustomBox>
       </RightArea>
     </Grid>
   );
