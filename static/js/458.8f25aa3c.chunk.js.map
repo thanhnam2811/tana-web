@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/458.8f25aa3c.chunk.js","mappings":"8KAEe,SAASA,IACtB,OAAO,yCACR,C","sources":["pages/Messages/DetailArea/TabStore/TabStoreFile.detail.jsx"],"sourcesContent":["import React from 'react';\r\n\r\nexport default function TabStoreFile() {\r\n  return <div>TabStoreFile</div>;\r\n}\r\n"],"names":["TabStoreFile"],"sourceRoot":""}

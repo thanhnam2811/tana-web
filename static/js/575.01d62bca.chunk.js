@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunksocial_web=self.webpackChunksocial_web||[]).push([[575],{2575:function(e,n,u){u.r(n),u.d(n,{default:function(){return i}});u(2791);var c=u(184);function i(){return(0,c.jsx)("div",{children:"TabStoreLink"})}}}]);
+//# sourceMappingURL=575.01d62bca.chunk.js.map

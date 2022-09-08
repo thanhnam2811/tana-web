@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/575.01d62bca.chunk.js","mappings":"+KAEe,SAASA,IACtB,OAAO,yCACR,C","sources":["pages/Messages/DetailArea/TabStore/TabStoreLink.detail.jsx"],"sourcesContent":["import React from 'react';\r\n\r\nexport default function TabStoreLink() {\r\n  return <div>TabStoreLink</div>;\r\n}\r\n"],"names":["TabStoreLink"],"sourceRoot":""}

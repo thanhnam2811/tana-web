@@ -1,15 +1,21 @@
 {
   "files": {
-    "main.css": "/tana-web/static/css/main.e7e0cc46.css",
-    "main.js": "/tana-web/static/js/main.80fb049d.js",
+    "main.css": "/tana-web/static/css/main.395f511b.css",
+    "main.js": "/tana-web/static/js/main.285c6b1e.js",
+    "static/js/341.4b74415f.chunk.js": "/tana-web/static/js/341.4b74415f.chunk.js",
+    "static/js/458.8f25aa3c.chunk.js": "/tana-web/static/js/458.8f25aa3c.chunk.js",
+    "static/js/575.01d62bca.chunk.js": "/tana-web/static/js/575.01d62bca.chunk.js",
     "static/js/787.cce9aca9.chunk.js": "/tana-web/static/js/787.cce9aca9.chunk.js",
     "index.html": "/tana-web/index.html",
-    "main.e7e0cc46.css.map": "/tana-web/static/css/main.e7e0cc46.css.map",
-    "main.80fb049d.js.map": "/tana-web/static/js/main.80fb049d.js.map",
+    "main.395f511b.css.map": "/tana-web/static/css/main.395f511b.css.map",
+    "main.285c6b1e.js.map": "/tana-web/static/js/main.285c6b1e.js.map",
+    "341.4b74415f.chunk.js.map": "/tana-web/static/js/341.4b74415f.chunk.js.map",
+    "458.8f25aa3c.chunk.js.map": "/tana-web/static/js/458.8f25aa3c.chunk.js.map",
+    "575.01d62bca.chunk.js.map": "/tana-web/static/js/575.01d62bca.chunk.js.map",
     "787.cce9aca9.chunk.js.map": "/tana-web/static/js/787.cce9aca9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e7e0cc46.css",
-    "static/js/main.80fb049d.js"
+    "static/css/main.395f511b.css",
+    "static/js/main.285c6b1e.js"
   ]
 }
