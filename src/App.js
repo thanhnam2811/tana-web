@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import {
+  Backdrop,
+  CircularProgress,
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+} from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import NavBar from './layout/NavBar/NavBar.layout';
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { getUser } from './redux/slice/userSlice';
 import MainRoute from './routes/MainRoute.route';
+import useToken from './hooks/useToken.hook';
 
 const defaultTheme = {
   typography: {
@@ -37,6 +46,24 @@ const lightTheme = createTheme({
 
 function App() {
   const [isLightTheme, setIsLightTheme] = useState(true);
+  const { token } = useToken();
+
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(getUser(token));
+  }, [dispatch, token]);
+
+  if (user.isFetching)
+    return (
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open
+      >
+        <CircularProgress color='inherit' />
+      </Backdrop>
+    );
 
   return (
     <ThemeProvider theme={isLightTheme ? lightTheme : darkTheme}>

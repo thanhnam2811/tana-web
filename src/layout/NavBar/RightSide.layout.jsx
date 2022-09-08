@@ -16,11 +16,14 @@ import {
   Menu,
   MenuItem,
   Tooltip,
-  Typography,
+  Typography
 } from '@mui/material';
 import { FcFaq, FcLike, FcStackOfPhotos } from 'react-icons/fc';
 import { FiBell } from 'react-icons/fi';
+import { useDispatch } from 'react-redux';
 import CustomIconButton from '../../components/CustomIconButton/CustomIconButton.component';
+import useToken from '../../hooks/useToken.hook';
+import { setUser } from '../../redux/slice/userSlice';
 
 const listNotifyDemo = [
   {
@@ -62,6 +65,14 @@ export default function RightSide({ isLightTheme, setIsLightTheme }) {
 
   const [notifyMenuEl, setNotifyMenuEl] = useState();
   const openNotifyMenu = Boolean(notifyMenuEl);
+
+  const { setToken } = useToken();
+  const dispatch = useDispatch();
+
+  const handleLogOut = () => {
+    setToken();
+    dispatch(setUser());
+  };
 
   return (
     <Grid
@@ -190,7 +201,7 @@ export default function RightSide({ isLightTheme, setIsLightTheme }) {
           Chế độ {isLightTheme ? 'tối' : 'sáng'}
         </MenuItem>
 
-        <MenuItem>
+        <MenuItem onClick={() => handleLogOut()}>
           <ListItemIcon>
             <Logout fontSize='small' />
           </ListItemIcon>

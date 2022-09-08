@@ -18,6 +18,7 @@ export default function CustomInput({
   EndIcon,
   onEndIconClick,
   tooltipEndIcon,
+  multiline,
 }) {
   return (
     <FormControl
@@ -31,14 +32,16 @@ export default function CustomInput({
     >
       <OutlinedInput
         onChange={onChange}
-        multiline
+        multiline={multiline}
         maxRows={5}
         sx={{
           '& fieldset': {
             border: 'none',
           },
           '& .MuiInputBase-input': {
-            m: '8px',
+            py: '8px',
+            pl: StartIcon ? '0' : '16px',
+            pr: EndIcon ? '0' : '16px',
           },
           p: 0,
         }}

@@ -17,6 +17,7 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import LeftSide from './LeftSide.layout';
 import RightSide from './RightSide.layout';
+import { useSelector } from 'react-redux';
 const pages = [
   {
     label: 'Trang chủ',
@@ -77,6 +78,7 @@ export default function NavBar({ isLightTheme, setIsLightTheme }) {
   const nav = useNavigate();
 
   const { pathname } = useLocation();
+  const user = useSelector((state) => state.user);
 
   return (
     <AppBar
@@ -88,66 +90,70 @@ export default function NavBar({ isLightTheme, setIsLightTheme }) {
     >
       <Container maxWidth='xxl' sx={{ px: 0 }}>
         <Toolbar disableGutters>
-          <Grid
-            container
-            sx={{
-              minHeight: 'inherit',
-            }}
-          >
-            {/* Left Area */}
-            <LeftSide />
-
-            {/* Main Nav Area */}
+          {user.data ? (
             <Grid
-              className='hide-scrollbar'
-              item
-              xs={12}
-              sm
+              container
               sx={{
-                display: 'flex',
-                justifyContent: {
-                  sm: 'center',
-                  xs: 'space-between',
-                },
-                alignItems: 'center',
-                overflowX: 'auto',
+                minHeight: 'inherit',
               }}
             >
-              <Tabs
-                value={
-                  pages.find((page) => pathname.startsWith(page.path))?.path
-                }
-                onChange={(e, path) => nav(path)}
-                aria-label='icon nav'
+              {/* Left Area */}
+              <LeftSide />
+
+              {/* Main Nav Area */}
+              <Grid
+                className='hide-scrollbar'
+                item
+                xs={12}
+                sm
                 sx={{
-                  height: '100%',
-                  '& div': {
-                    height: '100%',
+                  display: 'flex',
+                  justifyContent: {
+                    sm: 'center',
+                    xs: 'space-between',
                   },
-                  '& button': {
-                    color: theme.palette.inActive.main,
-                  },
+                  alignItems: 'center',
                 }}
               >
-                {pages.map((page, index) => (
-                  <Tab
-                    value={page.path}
-                    key={index}
-                    icon={<page.icon color='inherit' size={24} />}
-                    aria-label={page.label}
-                    sx={{
-                      display: page.display,
+                <Tabs
+                  variant='scrollable'
+                  value={
+                    pages.find((page) => pathname.startsWith(page.path))?.path
+                  }
+                  onChange={(e, path) => nav(path)}
+                  aria-label='icon nav'
+                  sx={{
+                    height: '100%',
+                    '& div': {
                       height: '100%',
-                    }}
-                    onClick={(e) => nav(page.path)}
-                  />
-                ))}
-              </Tabs>
-            </Grid>
+                    },
+                    '& button': {
+                      color: theme.palette.inActive.main,
+                    },
+                  }}
+                >
+                  {pages.map((page, index) => (
+                    <Tab
+                      value={page.path}
+                      key={index}
+                      icon={<page.icon color='inherit' size={24} />}
+                      aria-label={page.label}
+                      sx={{
+                        display: page.display,
+                        height: '100%',
+                      }}
+                      onClick={(e) => nav(page.path)}
+                    />
+                  ))}
+                </Tabs>
+              </Grid>
 
-            {/* Right Nav Area */}
-            <RightSide isLightTheme setIsLightTheme />
-          </Grid>
+              {/* Right Nav Area */}
+              <RightSide isLightTheme setIsLightTheme />
+            </Grid>
+          ) : (
+            <></>
+          )}
         </Toolbar>
       </Container>
       <Divider
